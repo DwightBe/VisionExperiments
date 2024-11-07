@@ -14,6 +14,9 @@
 		23FB01DD2C4F09DB00C52219 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23FB01DC2C4F09DB00C52219 /* Assets.xcassets */; };
 		23FB01E02C4F09DB00C52219 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23FB01DF2C4F09DB00C52219 /* Preview Assets.xcassets */; };
 		23FB01EB2C4F09DB00C52219 /* VisionExperimentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FB01EA2C4F09DB00C52219 /* VisionExperimentsTests.swift */; };
+		23FB01F92C4F0FE400C52219 /* studio.skybox in Resources */ = {isa = PBXBuildFile; fileRef = 23FB01F82C4F0FE400C52219 /* studio.skybox */; };
+		23FB02022C4F176100C52219 /* cape_hill.skybox in Resources */ = {isa = PBXBuildFile; fileRef = 23FB02012C4F176100C52219 /* cape_hill.skybox */; };
+		23FB02062C4F355700C52219 /* puresky.skybox in Resources */ = {isa = PBXBuildFile; fileRef = 23FB02052C4F355700C52219 /* puresky.skybox */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +40,9 @@
 		23FB01E12C4F09DB00C52219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		23FB01E62C4F09DB00C52219 /* VisionExperimentsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VisionExperimentsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		23FB01EA2C4F09DB00C52219 /* VisionExperimentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionExperimentsTests.swift; sourceTree = "<group>"; };
+		23FB01F82C4F0FE400C52219 /* studio.skybox */ = {isa = PBXFileReference; lastKnownFileType = file.skybox; name = studio.skybox; path = ../../visionDice/visionDice/studio.skybox; sourceTree = "<group>"; };
+		23FB02012C4F176100C52219 /* cape_hill.skybox */ = {isa = PBXFileReference; lastKnownFileType = file.skybox; path = cape_hill.skybox; sourceTree = "<group>"; };
+		23FB02052C4F355700C52219 /* puresky.skybox */ = {isa = PBXFileReference; lastKnownFileType = file.skybox; path = puresky.skybox; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,9 +86,12 @@
 		23FB01D12C4F09D900C52219 /* VisionExperiments */ = {
 			isa = PBXGroup;
 			children = (
+				23FB02052C4F355700C52219 /* puresky.skybox */,
 				23FB01D62C4F09D900C52219 /* VisionExperimentsApp.swift */,
 				23FB01D82C4F09D900C52219 /* ContentView.swift */,
 				23FB01DA2C4F09D900C52219 /* ImmersiveView.swift */,
+				23FB02012C4F176100C52219 /* cape_hill.skybox */,
+				23FB01F82C4F0FE400C52219 /* studio.skybox */,
 				23FB01DC2C4F09DB00C52219 /* Assets.xcassets */,
 				23FB01E12C4F09DB00C52219 /* Info.plist */,
 				23FB01DE2C4F09DB00C52219 /* Preview Content */,
@@ -199,7 +208,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				23FB01E02C4F09DB00C52219 /* Preview Assets.xcassets in Resources */,
+				23FB01F92C4F0FE400C52219 /* studio.skybox in Resources */,
 				23FB01DD2C4F09DB00C52219 /* Assets.xcassets in Resources */,
+				23FB02062C4F355700C52219 /* puresky.skybox in Resources */,
+				23FB02022C4F176100C52219 /* cape_hill.skybox in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

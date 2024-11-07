@@ -10,46 +10,24 @@ import RealityKit
 import RealityKitContent
 
 struct ContentView: View {
-
-    @State private var showImmersiveSpace = false
-    @State private var immersiveSpaceIsShown = false
-
+    var appData: AppData
+    
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
-    @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
-
     var body: some View {
+        let contactsName = appData.count >= 0 ? appData.contactsArray[appData.count].name : appData.contactsArray[appData.contactsArray.count + appData.count].name
         VStack {
-            Model3D(named: "Scene", bundle: realityKitContentBundle)
-                .padding(.bottom, 50)
-
-            Text("Hello, world!")
-
-            Toggle("Show Immersive Space", isOn: $showImmersiveSpace)
-                .toggleStyle(.button)
-                .padding(.top, 50)
+            Text("\(contactsName)")
+                .foregroundStyle(.yellow)
+                .font(.custom("Menlo", size: 100))
+                .bold()
         }
-        .padding()
-        .onChange(of: showImmersiveSpace) { _, newValue in
-            Task {
-                if newValue {
-                    switch await openImmersiveSpace(id: "ImmersiveSpace") {
-                    case .opened:
-                        immersiveSpaceIsShown = true
-                    case .error, .userCancelled:
-                        fallthrough
-                    @unknown default:
-                        immersiveSpaceIsShown = false
-                        showImmersiveSpace = false
-                    }
-                } else if immersiveSpaceIsShown {
-                    await dismissImmersiveSpace()
-                    immersiveSpaceIsShown = false
-                }
-            }
+        .task {
+            await openImmersiveSpace(id: "ImmersiveSpace" )
         }
     }
+
 }
 
 #Preview(windowStyle: .automatic) {
-    ContentView()
+    ContentView(appData: AppData())
 }
