@@ -18,10 +18,14 @@ struct ImmersiveView: View {
     @State var currentCount: Int = 0
     @State var discsFullyExtended: Bool = false
     @State var resetDiscs: Bool = false
+    @State var cube: ModelEntity = ModelEntity( mesh: .generateBox(size: 0.26), materials: [SimpleMaterial(color: .white, isMetallic: true)])
+    @State var circle: ModelEntity =  ModelEntity( mesh: .generatePlane(width: 0.22, depth: 0.22, cornerRadius: 0.22), materials: [SimpleMaterial(color: .white, isMetallic: true)])
+    @State var circle2: ModelEntity =  ModelEntity( mesh: .generatePlane(width: 0.22, depth: 0.22, cornerRadius: 0.22), materials: [SimpleMaterial(color: .blue, isMetallic: true)])
+    
     var body: some View {
         VStack {
             RealityView { content in
-                let cube = ModelEntity( mesh: .generateBox(size: 0.26), materials: [SimpleMaterial(color: .white, isMetallic: true)])
+                
                 cube.scale = [1, 1, 1]
                 cube.position.z = -1
                 cube.position.y = 0.5
@@ -30,8 +34,6 @@ struct ImmersiveView: View {
                 cube.components.set(InputTargetComponent())
                 cube.components[PhysicsMotionComponent.self] = .init()
                 cube.name = "iCube"
-                
-                let circle = ModelEntity( mesh: .generatePlane(width: 0.22, depth: 0.22, cornerRadius: 0.22), materials: [SimpleMaterial(color: .white, isMetallic: true)])
             
                 circle.position.y = 0.5
                 circle.position.x = 0.5
@@ -56,7 +58,6 @@ struct ImmersiveView: View {
                 
                 circle.addChild(phoneText)
 
-                let circle2 = ModelEntity( mesh: .generatePlane(width: 0.22, depth: 0.22, cornerRadius: 0.22), materials: [SimpleMaterial(color: .blue, isMetallic: true)])
                 circle2.position.y = 0.5
                 circle2.position.x = 0.5
                 circle2.position.z = -1
@@ -76,6 +77,7 @@ struct ImmersiveView: View {
                 content.add(circle)
                 content.add(circle2)
                 content.add(cube)
+              
             }
             update: { content in
                 
@@ -106,20 +108,15 @@ struct ImmersiveView: View {
                 discsFullyExtended = false
                 allowDragDown = false
                 
-                if let circle = value.entity.parent?.findEntity(named: "iCircle"){
-                    if(!discsFullyExtended){
-                        circle.position.y = 0.5
-                        circle.scale = [1,1,1]
-                    }
+                if discsFullyExtended {
+                    return
                 }
-                
-                if let circle2 = value.entity.parent?.findEntity(named: "iCircle2"){
-                    if(!discsFullyExtended){
-                        circle2.position.x = 0.5
-                        circle2.scale = [1,1,1]
-                    }
-                    
-                }
+              
+                circle.position.y = 0.5
+                circle.scale = [1,1,1]
+                circle2.position.x = 0.5
+                circle2.scale = [1,1,1]
+
             }
             .simultaneously(with: dragGesture)
     }
@@ -134,15 +131,13 @@ struct ImmersiveView: View {
                 }
                 
                 if(resetDiscs){
-                    if let circle = value.entity.parent?.findEntity(named: "iCircle"){
-                            circle.position.y = 0.5
-                            circle.scale = [1,1,1]
-                    }
+                   
+                    circle.position.y = 0.5
+                    circle.scale = [1,1,1]
+            
+                    circle2.position.x = 0.5
+                    circle2.scale = [1,1,1]
                     
-                    if let circle2 = value.entity.parent?.findEntity(named: "iCircle2"){
-                            circle2.position.x = 0.5
-                            circle2.scale = [1,1,1]
-                    }
                     resetDiscs = false
                 }
                 allowDragDown = true
@@ -188,51 +183,47 @@ struct ImmersiveView: View {
                 
 
                 if(allowDragDown) {
-                    if let circle = value.entity.parent?.findEntity(named: "iCircle"){
-                        
-                        if(circle.position.y > 0.8) {
-                            circle.position.y = 0.8
+ 
+                    if(circle.position.y > 0.8) {
+                        circle.position.y = 0.8
+                    }
+                    if(circle.position.y < 0.5) {
+                        circle.position.y = 0.5
+                    }
+                    if(circle.scale.x > 1.4) {
+                        circle.scale = [1.4, 1.4, 1.4]
+                    }
+                    if(circle.scale.x < 1) {
+                        circle.scale = [1, 1, 1]
+                    }
+                    if(circle.position.y <= 0.8 && circle.position.y >= 0.5){
+                        circle.position.y += (!isMovingUp ? 0.03 : -0.03)
+                        if(circle.scale.x >= 1 && circle.scale.x <= 1.4) {
+                            circle.scale += (!isMovingUp ? 0.05 : -0.05)
                         }
-                        if(circle.position.y < 0.5) {
-                            circle.position.y = 0.5
-                        }
-                        if(circle.scale.x > 1.4) {
-                            circle.scale = [1.4, 1.4, 1.4]
-                        }
-                        if(circle.scale.x < 1) {
-                            circle.scale = [1, 1, 1]
-                        }
-                        if(circle.position.y <= 0.8 && circle.position.y >= 0.5){
-                            circle.position.y += (!isMovingUp ? 0.03 : -0.03)
-                            if(circle.scale.x >= 1 && circle.scale.x <= 1.4) {
-                                circle.scale += (!isMovingUp ? 0.05 : -0.05)
-                            }
-                        }
-                        
-                        discsFullyExtended = (circle.position.y > 0.78) ? true : false
+                    }
                     
+                    discsFullyExtended = (circle.position.y > 0.78) ? true : false
+                    
+                    if(circle2.position.x > 0.8) {
+                        circle2.position.x = 0.8
                     }
-                    if let circle2 = value.entity.parent?.findEntity(named: "iCircle2"){
-                        if(circle2.position.x > 0.8) {
-                            circle2.position.x = 0.8
+                    if(circle2.position.x < 0.5 ) {
+                        circle2.position.x = 0.53
+                    }
+                    if(circle2.scale.x > 1.4) {
+                        circle2.scale = [1.4, 1.4, 1.4]
+                    }
+                    if(circle2.scale.x < 1) {
+                        circle2.scale = [1, 1, 1]
+                    }
+                    if(circle2.position.x <= 0.8 && circle2.position.x >= 0.5){
+                        circle2.position.x += (!isMovingUp ? 0.03 : -0.03)
+                        if(circle2.scale.x >= 1 && circle2.scale.x <= 1.4) {
+                            circle2.scale += (!isMovingUp ? 0.05 : -0.05)
                         }
-                        if(circle2.position.x < 0.5 ) {
-                            circle2.position.x = 0.53
-                        }
-                        if(circle2.scale.x > 1.4) {
-                            circle2.scale = [1.4, 1.4, 1.4]
-                        }
-                        if(circle2.scale.x < 1) {
-                            circle2.scale = [1, 1, 1]
-                        }
-                        if(circle2.position.x <= 0.8 && circle2.position.x >= 0.5){
-                            circle2.position.x += (!isMovingUp ? 0.03 : -0.03)
-                            if(circle2.scale.x >= 1 && circle2.scale.x <= 1.4) {
-                                circle2.scale += (!isMovingUp ? 0.05 : -0.05)
-                            }
-                        }
+                    }
             
-                    }
                   
                     
                         /*
@@ -256,22 +247,18 @@ struct ImmersiveView: View {
                     value.entity.transform.rotation = simd_quaternion(Float((Double(newCount))*(Double.pi/2)), simd_float3(x:0,y:1, z:0))
                     
                 }
-                if let circle = value.entity.parent?.findEntity(named: "iCircle"){
-                    if(!discsFullyExtended){
-                        circle.position.y = 0.5
-                        circle.scale = [1,1,1]
-                    }
-                }
                 
-                if let circle2 = value.entity.parent?.findEntity(named: "iCircle2"){
-                    if(!discsFullyExtended){
-                        circle2.position.x = 0.53
-                        circle2.scale = [1,1,1]
-                    }
-                    
-                }
                 currentYPos = 0.0
                 allowDragDown = false
+                
+                if discsFullyExtended {
+                    return
+                }
+                circle.position.y = 0.5
+                circle.scale = [1,1,1]
+                circle2.position.x = 0.53
+                circle2.scale = [1,1,1]
+                
             
             }
             .simultaneously(with: longPress)
